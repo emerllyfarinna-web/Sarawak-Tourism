@@ -1,0 +1,141 @@
+
+// Validate Name — at least 2 characters
+function validateName(name) {
+    return name.trim().length >= 2;
+}
+
+// Validate Email — correct format
+function validateEmail(email) {
+    var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+}
+
+// Validate Phone — numbers, 8-15 digits
+function validatePhone(phone) {
+    var pattern = /^[\d\s\-+]{8,15}$/;
+    return pattern.test(phone.trim());
+}
+
+// Validate Message — at least 10 characters
+function validateMessage(msg) {
+    return msg.trim().length >= 10;
+}
+
+// Show Error Message
+function showError(id) {
+    document.getElementById(id).style.display = "block";
+}
+
+// Hide Error Message
+function hideError(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+// Show Success Message
+function showSuccess(id) {
+    document.getElementById(id).style.display = "block";
+    setTimeout(function() {
+        document.getElementById(id).style.display = "none";
+    }, 4000);
+}
+
+// Clear All Errors
+function clearAllErrors(ids) {
+    ids.forEach(function(id) {
+        hideError(id);
+    });
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    
+    var contactForm = document.getElementById("contactForm");
+    if (contactForm) {
+        contactForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            var name = document.getElementById("contactName").value;
+            var email = document.getElementById("contactEmail").value;
+            var message = document.getElementById("contactMessage").value;
+            var consent = document.getElementById("contactConsent").checked;
+            
+            var isValid = true;
+            clearAllErrors(["contactNameErr", "contactEmailErr", "contactMessageErr", "contactConsentErr"]);
+            
+            if (!validateName(name)) {
+                showError("contactNameErr");
+                isValid = false;
+            }
+            if (!validateEmail(email)) {
+                showError("contactEmailErr");
+                isValid = false;
+            }
+            if (!validateMessage(message)) {
+                showError("contactMessageErr");
+                isValid = false;
+            }
+            if (!consent) {
+                showError("contactConsentErr");
+                isValid = false;
+            }
+            
+            if (isValid) {
+                showSuccess("contactSuccess");
+                contactForm.reset();
+            }
+        });
+    }
+
+
+    var bookingForm = document.getElementById("bookingForm");
+    if (bookingForm) {
+        bookingForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            var name = document.getElementById("bookName").value;
+            var email = document.getElementById("bookEmail").value;
+            var phone = document.getElementById("bookPhone").value;
+            var packageSel = document.getElementById("bookPackage").value;
+            var date = document.getElementById("bookDate").value;
+            var pax = document.getElementById("bookPax").value;
+            var consent = document.getElementById("bookConsent").checked;
+            
+            var isValid = true;
+            clearAllErrors(["bookNameErr", "bookEmailErr", "bookPhoneErr", "bookPackageErr", "bookDateErr", "bookPaxErr", "bookConsentErr"]);
+            
+            if (!validateName(name)) {
+                showError("bookNameErr");
+                isValid = false;
+            }
+            if (!validateEmail(email)) {
+                showError("bookEmailErr");
+                isValid = false;
+            }
+            if (!validatePhone(phone)) {
+                showError("bookPhoneErr");
+                isValid = false;
+            }
+            if (packageSel === "") {
+                showError("bookPackageErr");
+                isValid = false;
+            }
+            if (date === "") {
+                showError("bookDateErr");
+                isValid = false;
+            }
+            if (!pax || pax < 1) {
+                showError("bookPaxErr");
+                isValid = false;
+            }
+            if (!consent) {
+                showError("bookConsentErr");
+                isValid = false;
+            }
+            
+            if (isValid) {
+                showSuccess("bookSuccess");
+                bookingForm.reset();
+            }
+        });
+    }
+});
